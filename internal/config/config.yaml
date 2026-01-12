@@ -1,0 +1,10 @@
+server:
+  addr: ":5000"
+
+db:
+  url: "postgres://postgres:password@localhost:5432/edugov?sslmode=disable"
+
+jwt:
+  secret: "change-me-in-prod"
+  access_ttl: "2h"
+  refresh_ttl: "168h"
