@@ -1,3 +1,4 @@
+// Package service implements application business logic.
 package service
 
 import (
@@ -9,11 +10,13 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
+// Service aggregates data store access and validation utilities.
 type Service struct {
 	store     *db.Store
 	validator *validator.Validate
 }
 
+// New constructs a Service with its dependencies.
 func New(store *db.Store, validator *validator.Validate) *Service {
 	return &Service{
 		store:     store,
@@ -21,6 +24,7 @@ func New(store *db.Store, validator *validator.Validate) *Service {
 	}
 }
 
+// asPgError unwraps pgx errors to pgconn.PgError when available.
 func (s *Service) asPgError(err error) *pgconn.PgError {
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) {
@@ -30,6 +34,7 @@ func (s *Service) asPgError(err error) *pgconn.PgError {
 	return nil
 }
 
+// pgErrToAppErr converts database errors into domain errors.
 func (s *Service) pgErrToAppErr(pgErr *pgconn.PgError) error {
 	detail := pgErr.Detail
 	if detail == "" {

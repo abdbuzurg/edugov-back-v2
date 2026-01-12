@@ -26,6 +26,7 @@ import (
 // 	return result
 // }
 
+// CreateEmployeeMainResearchArea creates a main research area with key topics.
 func (s *Service) CreateEmployeeMainResearchArea(ctx context.Context, req *dto.CreateEmployeeMainResearchAreaRequest) (*dto.EmployeeMainResearchAreaResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -88,6 +89,7 @@ func (s *Service) CreateEmployeeMainResearchArea(ctx context.Context, req *dto.C
 	return result, nil
 }
 
+// UpdateEmployeeMainResearchArea updates an existing research area and key topics.
 func (s *Service) UpdateEmployeeMainResearchArea(ctx context.Context, req *dto.UpdateEmployeeMainResearchAreaRequest) (*dto.EmployeeMainResearchAreaResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -200,6 +202,7 @@ func (s *Service) UpdateEmployeeMainResearchArea(ctx context.Context, req *dto.U
 	return result, nil
 }
 
+// DeleteEmployeeMainResearchArea removes a research area and its key topics.
 func (s *Service) DeleteEmployeeMainResearchArea(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -228,6 +231,7 @@ func (s *Service) DeleteEmployeeMainResearchArea(ctx context.Context, id int64) 
 	})
 }
 
+// GetEmployeeMainResearchAreaByEmployeeIDAndLanguageCode lists research areas for an employee.
 func (s *Service) GetEmployeeMainResearchAreaByEmployeeIDAndLanguageCode(ctx context.Context, employeeID int64, languageCode string) ([]*dto.EmployeeMainResearchAreaResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid employee id", map[string]string{

@@ -17,6 +17,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Register creates a user and linked employee record.
 func (s *Service) Register(ctx context.Context, req *dto.RegisterRequest) error {
 	if err := s.validator.Struct(req); err != nil {
 		return apperr.ValidationFromValidator(err)
@@ -72,6 +73,7 @@ func (s *Service) Register(ctx context.Context, req *dto.RegisterRequest) error 
 	})
 }
 
+// Login verifies credentials, issues tokens, and stores a refresh session.
 func (s *Service) Login(ctx context.Context, req *dto.AuthRequest) (*dto.AuthResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -169,6 +171,7 @@ func (s *Service) Login(ctx context.Context, req *dto.AuthRequest) (*dto.AuthRes
 	}, nil
 }
 
+// RefreshToken validates the refresh token and rotates tokens.
 func (s *Service) RefreshToken(ctx context.Context, refreshToken string) (*dto.AuthResponse, error) {
 	if refreshToken == "" {
 		return nil, apperr.Validation("refresh token required", map[string]string{
@@ -277,6 +280,7 @@ func (s *Service) RefreshToken(ctx context.Context, refreshToken string) (*dto.A
 	}, nil
 }
 
+// Logout removes all sessions for the user referenced by the refresh token.
 func (s *Service) Logout(ctx context.Context, req *dto.LogoutRequest) error {
 	if err := s.validator.Struct(req); err != nil {
 		return apperr.ValidationFromValidator(err)

@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// Register handles user registration requests.
 func (h *Handlers) Register(w http.ResponseWriter, r *http.Request) {
 	var req dto.RegisterRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -20,6 +21,7 @@ func (h *Handlers) Register(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+// Login handles user login requests.
 func (h *Handlers) Login(w http.ResponseWriter, r *http.Request) {
 	var req dto.AuthRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -36,6 +38,7 @@ func (h *Handlers) Login(w http.ResponseWriter, r *http.Request) {
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// RefreshToken rotates auth tokens using a refresh token.
 func (h *Handlers) RefreshToken(w http.ResponseWriter, r *http.Request) {
 	var req dto.RefreshTokenRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -52,6 +55,7 @@ func (h *Handlers) RefreshToken(w http.ResponseWriter, r *http.Request) {
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// Logout removes active sessions for the supplied refresh token.
 func (h *Handlers) Logout(w http.ResponseWriter, r *http.Request) {
 	var req dto.LogoutRequest
 	if err := DecodeJSON(r, &req); err != nil {

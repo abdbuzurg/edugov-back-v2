@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// GetEmployeeByUniqueID returns a full employee profile by unique ID and language.
 func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, langCode string) (*dto.EmployeeResponse, error) {
 	if uniqueID == "" {
 		return nil, apperr.Validation("invalid uniqueID", map[string]string{

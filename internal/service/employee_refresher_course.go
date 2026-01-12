@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+// CreateEmployeeRefresherCourse creates a refresher course entry.
 func (s *Service) CreateEmployeeRefresherCourse(ctx context.Context, req *dto.CreateEmployeeRefresherCourseRequest) (*dto.EmployeeRefresherCourseResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -47,6 +48,7 @@ func (s *Service) CreateEmployeeRefresherCourse(ctx context.Context, req *dto.Cr
 	}, nil
 }
 
+// UpdateEmployeeRefresherCourse updates a refresher course entry.
 func (s *Service) UpdateEmployeeRefresherCourse(ctx context.Context, req *dto.UpdateEmployeeRefresherCourseRequest) (*dto.EmployeeRefresherCourseResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -88,6 +90,7 @@ func (s *Service) UpdateEmployeeRefresherCourse(ctx context.Context, req *dto.Up
 	}, nil
 }
 
+// DeleteEmployeeRefresherCourse removes a refresher course entry.
 func (s *Service) DeleteEmployeeRefresherCourse(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -107,6 +110,7 @@ func (s *Service) DeleteEmployeeRefresherCourse(ctx context.Context, id int64) e
 	return nil
 }
 
+// GetEmployeeRefresherCoursesByEmployeeIDAndLanguageCode lists refresher courses for an employee.
 func (s *Service) GetEmployeeRefresherCoursesByEmployeeIDAndLanguageCode(ctx context.Context, employeeID int64, langCode string) ([]*dto.EmployeeRefresherCourseResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid id", map[string]string{

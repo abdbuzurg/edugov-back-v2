@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeeResearchActivity handles creation requests for research activities.
 func (h *Handlers) CreateEmployeeResearchActivity(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeeResearchActivityRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -24,6 +25,7 @@ func (h *Handlers) CreateEmployeeResearchActivity(w http.ResponseWriter, r *http
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeeResearchActivities lists research activities for an employee.
 func (h *Handlers) GetEmployeeResearchActivities(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -50,6 +52,7 @@ func (h *Handlers) GetEmployeeResearchActivities(w http.ResponseWriter, r *http.
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeeResearchActivity handles update requests for research activities.
 func (h *Handlers) UpdateEmployeeResearchActivity(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeeResearchActivityRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -66,6 +69,7 @@ func (h *Handlers) UpdateEmployeeResearchActivity(w http.ResponseWriter, r *http
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeeResearchActivity handles deletion requests for research activities.
 func (h *Handlers) DeleteEmployeeResearchActivity(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {

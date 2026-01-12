@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeeParticipationInProfessionalCommunity handles creation requests for communities.
 func (h *Handlers) CreateEmployeeParticipationInProfessionalCommunity(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeeParticipationInProfessionalCommunityRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -24,6 +25,7 @@ func (h *Handlers) CreateEmployeeParticipationInProfessionalCommunity(w http.Res
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeeParticipationInProfessionalCommunities lists community participation for an employee.
 func (h *Handlers) GetEmployeeParticipationInProfessionalCommunities(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -46,6 +48,7 @@ func (h *Handlers) GetEmployeeParticipationInProfessionalCommunities(w http.Resp
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeeParticipationInProfessionalCommunity handles update requests for communities.
 func (h *Handlers) UpdateEmployeeParticipationInProfessionalCommunity(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeeParticipationInProfessionalCommunityRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -62,6 +65,7 @@ func (h *Handlers) UpdateEmployeeParticipationInProfessionalCommunity(w http.Res
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeeParticipationInProfessionalCommunity handles deletion requests for communities.
 func (h *Handlers) DeleteEmployeeParticipationInProfessionalCommunity(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {

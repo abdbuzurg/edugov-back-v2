@@ -2,8 +2,7 @@ package dto
 
 import "time"
 
-// ---- REQUEST DTOs ----
-
+// CreateEmployeeWorkExperienceRequest represents input for creating work experience.
 type CreateEmployeeWorkExperienceRequest struct {
 	EmployeeID   int64      `json:"employeeID" validate:"required,min=1"`
 	LanguageCode string     `json:"-" validate:"required,len=2"`
@@ -15,6 +14,7 @@ type CreateEmployeeWorkExperienceRequest struct {
 	OnGoing      bool       `json:"ongoing"`
 }
 
+// UpdateEmployeeWorkExperienceRequest represents input for updating work experience.
 type UpdateEmployeeWorkExperienceRequest struct {
 	ID          int64      `json:"id" validate:"required,min=1"`
 	JobTitle    *string    `json:"jobTitle" validate:"omitempty"`
@@ -25,8 +25,7 @@ type UpdateEmployeeWorkExperienceRequest struct {
 	OnGoing     *bool      `json:"ongoing"`
 }
 
-// ---- RESPONSE DTOs ----
-
+// EmployeeWorkExperienceResponse represents work experience in responses.
 type EmployeeWorkExperienceResponse struct {
 	ID          int64     `json:"id"`
 	Workplace   string    `json:"workplace"`

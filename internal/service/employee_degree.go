@@ -30,6 +30,7 @@ func (s *Service) mapSQLCEmployeeDegreeModelToDTOEmployeeDegreeResponse(dbResult
 	return result
 }
 
+// CreateEmployeeDegree validates and stores a new degree.
 func (s *Service) CreateEmployeeDegree(ctx context.Context, req *dto.CreateEmployeeDegreeRequest) (*dto.EmployeeDegreeResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -69,6 +70,7 @@ func (s *Service) CreateEmployeeDegree(ctx context.Context, req *dto.CreateEmplo
 	return &result, nil
 }
 
+// UpdateEmployeeDegree applies updates to an existing degree.
 func (s *Service) UpdateEmployeeDegree(ctx context.Context, req *dto.UpdateEmployeeDegreeRequest) (*dto.EmployeeDegreeResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -119,6 +121,7 @@ func (s *Service) UpdateEmployeeDegree(ctx context.Context, req *dto.UpdateEmplo
 	return &result, nil
 }
 
+// DeleteEmployeeDegree removes a degree by ID.
 func (s *Service) DeleteEmployeeDegree(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -138,6 +141,7 @@ func (s *Service) DeleteEmployeeDegree(ctx context.Context, id int64) error {
 	return nil
 }
 
+// GetEmployeeDegreesByEmployeeIDAndLanguageCode lists degrees for an employee in a language.
 func (s *Service) GetEmployeeDegreesByEmployeeIDAndLanguageCode(ctx context.Context, employeeID int64, languageCode string) ([]*dto.EmployeeDegreeResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid employee id", map[string]string{

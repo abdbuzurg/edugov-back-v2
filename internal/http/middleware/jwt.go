@@ -15,6 +15,7 @@ import (
 
 const ctxKeyUserID ctxKey = "user_id"
 
+// UserIDFromContext retrieves the user ID stored by JWTMiddleware.
 func UserIDFromContext(ctx context.Context) (string, bool) {
 	v, ok := ctx.Value(ctxKeyUserID).(string)
 	if !ok || v == "" {
@@ -23,6 +24,7 @@ func UserIDFromContext(ctx context.Context) (string, bool) {
 	return v, true
 }
 
+// JWTMiddleware enforces bearer token authentication for wrapped routes.
 func JWTMiddleware() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

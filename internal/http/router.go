@@ -1,3 +1,4 @@
+// Package httpx wires the HTTP router and middleware.
 package httpx
 
 import (
@@ -9,10 +10,12 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
+// App holds the configured router.
 type App struct {
 	Router http.Handler
 }
 
+// NewRouter builds the chi router with all routes and middleware.
 func NewRouter(h *handlers.Handlers) *App {
 	r := chi.NewRouter()
 

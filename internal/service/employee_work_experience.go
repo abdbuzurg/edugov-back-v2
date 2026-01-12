@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+// CreateEmployeeWorkExperience creates a work experience entry.
 func (s *Service) CreateEmployeeWorkExperience(
 	ctx context.Context,
 	req *dto.CreateEmployeeWorkExperienceRequest,
@@ -61,6 +62,7 @@ func (s *Service) CreateEmployeeWorkExperience(
 	}, nil
 }
 
+// UpdateEmployeeWorkExperience updates a work experience entry.
 func (s *Service) UpdateEmployeeWorkExperience(
 	ctx context.Context,
 	req *dto.UpdateEmployeeWorkExperienceRequest,
@@ -114,6 +116,7 @@ func (s *Service) UpdateEmployeeWorkExperience(
 	}, nil
 }
 
+// DeleteEmployeeWorkExperience removes a work experience entry.
 func (s *Service) DeleteEmployeeWorkExperience(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -134,6 +137,7 @@ func (s *Service) DeleteEmployeeWorkExperience(ctx context.Context, id int64) er
 	return nil
 }
 
+// GetEmployeeWorkExperiencesByEmployeeIDAndLanguageCode lists work experience entries for an employee.
 func (s *Service) GetEmployeeWorkExperiencesByEmployeeIDAndLanguageCode(
 	ctx context.Context,
 	employeeID int64,

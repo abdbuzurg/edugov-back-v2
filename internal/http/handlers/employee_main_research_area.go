@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// CreateEmployeeMainResearchArea handles creation of research areas.
 func (h *Handlers) CreateEmployeeMainResearchArea(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeeMainResearchAreaRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -53,6 +54,7 @@ func (h *Handlers) CreateEmployeeMainResearchArea(w http.ResponseWriter, r *http
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeeMainResearchAreas lists research areas for an employee.
 func (h *Handlers) GetEmployeeMainResearchAreas(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -75,6 +77,7 @@ func (h *Handlers) GetEmployeeMainResearchAreas(w http.ResponseWriter, r *http.R
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeeMainResearchArea handles research area updates.
 func (h *Handlers) UpdateEmployeeMainResearchArea(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeeMainResearchAreaRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -114,6 +117,7 @@ func (h *Handlers) UpdateEmployeeMainResearchArea(w http.ResponseWriter, r *http
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeeMainResearchArea handles research area deletion.
 func (h *Handlers) DeleteEmployeeMainResearchArea(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {

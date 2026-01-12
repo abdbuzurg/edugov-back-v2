@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// CreateEmployeeSocial creates a social link entry.
 func (s *Service) CreateEmployeeSocial(
 	ctx context.Context,
 	req *dto.CreateEmployeeSocialRequest,
@@ -43,6 +44,7 @@ func (s *Service) CreateEmployeeSocial(
 	}, nil
 }
 
+// UpdateEmployeeSocial updates an existing social link.
 func (s *Service) UpdateEmployeeSocial(
 	ctx context.Context,
 	req *dto.UpdateEmployeeSocialRequest,
@@ -78,6 +80,7 @@ func (s *Service) UpdateEmployeeSocial(
 	}, nil
 }
 
+// DeleteEmployeeSocial removes a social link entry.
 func (s *Service) DeleteEmployeeSocial(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -98,6 +101,7 @@ func (s *Service) DeleteEmployeeSocial(ctx context.Context, id int64) error {
 	return nil
 }
 
+// GetEmployeeSocialByEmployeeID lists social links for an employee.
 func (s *Service) GetEmployeeSocialByEmployeeID(
 	ctx context.Context,
 	employeeID int64,

@@ -2,8 +2,7 @@ package dto
 
 import "time"
 
-// ---- REQUEST DTOS ----
-
+// CreateEmployeeDetailsRequest represents input for creating employee details.
 type CreateEmployeeDetailsRequest struct {
 	LanguageCode         string `json:"languageCode" validate:"required,len=2"`
 	Surname              string `json:"surname" validate:"required"`
@@ -12,6 +11,7 @@ type CreateEmployeeDetailsRequest struct {
 	IsEmployeeDetailsNew bool   `json:"isNewEmployeeDetails" validate:"required"`
 }
 
+// UpdateEmployeeDetailsRequest represents input for updating employee details.
 type UpdateEmployeeDetailsRequest struct {
 	ID                   int64   `json:"id" validate:"min=0"`
 	EmployeeID           int64   `json:"employeeID" validate:"required,min=1"`
@@ -22,12 +22,12 @@ type UpdateEmployeeDetailsRequest struct {
 	IsEmployeeDetailsNew *bool   `json:"isNewEmployeeDetails"`
 }
 
+// UpdateFullEmployeeData wraps multiple details updates.
 type UpdateFullEmployeeData struct {
 	Data []UpdateEmployeeDetailsRequest `json:"data"`
 }
 
-// ---- RESPONSE DTOS ----
-
+// EmployeeDetailsResponse represents details in responses.
 type EmployeeDetailsResponse struct {
 	ID                   int64     `json:"id"`
 	LanguageCode         string    `json:"languageCode"`

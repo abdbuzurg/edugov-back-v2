@@ -2,7 +2,7 @@ package dto
 
 import "time"
 
-// ---- REQUEST DTOs ----
+// CreateEmployeePublicationRequest represents input for creating a publication.
 type CreateEmployeePublicationRequest struct {
 	EmployeeID        int64  `json:"employeeID" validate:"required,min=1"`
 	LanguageCode      string `json:"-" validate:"required,len=2"`
@@ -10,14 +10,14 @@ type CreateEmployeePublicationRequest struct {
 	LinkToPublication string `json:"linkToPublication" validate:"required"`
 }
 
+// UpdateEmployeePublicationRequest represents input for updating a publication.
 type UpdateEmployeePublicationRequest struct {
 	ID                int64   `json:"id" validate:"required,min=1"`
 	PublicationTitle  *string `json:"publicationTitle" validate:"omitempty"`
 	LinkToPublication *string `json:"linkToPublication" validate:"omitempty"`
 }
 
-// ---- RESPONSE DTOs ----
-
+// EmployeePublicationResponse represents a publication in responses.
 type EmployeePublicationResponse struct {
 	ID                int64     `json:"id"`
 	PublicationTitle  string    `json:"publicationTitle"`

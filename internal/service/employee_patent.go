@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// CreateEmployeePatent creates a patent entry.
 func (s *Service) CreateEmployeePatent(ctx context.Context, req *dto.CreateEmployeePatentRequest) (*dto.EmployeePatentResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -37,6 +38,7 @@ func (s *Service) CreateEmployeePatent(ctx context.Context, req *dto.CreateEmplo
 	}, nil
 }
 
+// UpdateEmployeePatent updates an existing patent.
 func (s *Service) UpdateEmployeePatent(ctx context.Context, req *dto.UpdateEmployeePatentRequest) (*dto.EmployeePatentResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -65,6 +67,7 @@ func (s *Service) UpdateEmployeePatent(ctx context.Context, req *dto.UpdateEmplo
 	}, nil
 }
 
+// DeleteEmployeePatent removes a patent entry.
 func (s *Service) DeleteEmployeePatent(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -84,6 +87,7 @@ func (s *Service) DeleteEmployeePatent(ctx context.Context, id int64) error {
 	return nil
 }
 
+// GetEmployeePatentsByEmployeeIDAndLanguageCode lists patents for an employee.
 func (s *Service) GetEmployeePatentsByEmployeeIDAndLanguageCode(ctx context.Context, employeeID int64, langCode string) ([]*dto.EmployeePatentResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid id", map[string]string{

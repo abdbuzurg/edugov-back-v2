@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeeDegree handles degree creation requests.
 func (h *Handlers) CreateEmployeeDegree(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeeDegreeRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -24,6 +25,7 @@ func (h *Handlers) CreateEmployeeDegree(w http.ResponseWriter, r *http.Request) 
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// UpdateEmployeeDegree handles degree update requests.
 func (h *Handlers) UpdateEmployeeDegree(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeeDegreeRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -40,6 +42,7 @@ func (h *Handlers) UpdateEmployeeDegree(w http.ResponseWriter, r *http.Request) 
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeeDegree handles degree deletion requests.
 func (h *Handlers) DeleteEmployeeDegree(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {
@@ -55,6 +58,7 @@ func (h *Handlers) DeleteEmployeeDegree(w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// GetEmployeeDegrees lists degrees for an employee.
 func (h *Handlers) GetEmployeeDegrees(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {

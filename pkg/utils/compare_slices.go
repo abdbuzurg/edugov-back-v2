@@ -1,3 +1,4 @@
+// Package utils provides small helpers shared across services.
 package utils
 
 // CompareSlices compares two slices by id.

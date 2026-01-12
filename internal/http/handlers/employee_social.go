@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeeSocial handles creation requests for social links.
 func (h *Handlers) CreateEmployeeSocial(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeeSocialRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -21,6 +22,7 @@ func (h *Handlers) CreateEmployeeSocial(w http.ResponseWriter, r *http.Request) 
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeeSocials lists social links for an employee.
 func (h *Handlers) GetEmployeeSocials(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -41,6 +43,7 @@ func (h *Handlers) GetEmployeeSocials(w http.ResponseWriter, r *http.Request) {
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeeSocial handles update requests for social links.
 func (h *Handlers) UpdateEmployeeSocial(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeeSocialRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -57,6 +60,7 @@ func (h *Handlers) UpdateEmployeeSocial(w http.ResponseWriter, r *http.Request) 
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeeSocial handles deletion requests for social links.
 func (h *Handlers) DeleteEmployeeSocial(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {

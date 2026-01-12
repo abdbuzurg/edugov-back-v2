@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeePublication handles creation requests for publications.
 func (h *Handlers) CreateEmployeePublication(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeePublicationRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -24,6 +25,7 @@ func (h *Handlers) CreateEmployeePublication(w http.ResponseWriter, r *http.Requ
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeePublications lists publications for an employee.
 func (h *Handlers) GetEmployeePublications(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -50,6 +52,7 @@ func (h *Handlers) GetEmployeePublications(w http.ResponseWriter, r *http.Reques
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeePublication handles update requests for publications.
 func (h *Handlers) UpdateEmployeePublication(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeePublicationRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -66,6 +69,7 @@ func (h *Handlers) UpdateEmployeePublication(w http.ResponseWriter, r *http.Requ
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeePublication handles deletion requests for publications.
 func (h *Handlers) DeleteEmployeePublication(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {

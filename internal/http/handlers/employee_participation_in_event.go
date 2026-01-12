@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeeParticipationInEvent handles creation requests for events.
 func (h *Handlers) CreateEmployeeParticipationInEvent(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeeParticipationInEventRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -24,6 +25,7 @@ func (h *Handlers) CreateEmployeeParticipationInEvent(w http.ResponseWriter, r *
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeeParticipationInEvents lists event participation for an employee.
 func (h *Handlers) GetEmployeeParticipationInEvents(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -46,6 +48,7 @@ func (h *Handlers) GetEmployeeParticipationInEvents(w http.ResponseWriter, r *ht
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeeParticipationInEvent handles update requests for events.
 func (h *Handlers) UpdateEmployeeParticipationInEvent(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeeParticipationInEventRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -62,6 +65,7 @@ func (h *Handlers) UpdateEmployeeParticipationInEvent(w http.ResponseWriter, r *
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeeParticipationInEvent handles deletion requests for events.
 func (h *Handlers) DeleteEmployeeParticipationInEvent(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {

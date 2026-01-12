@@ -2,7 +2,7 @@ package dto
 
 import "time"
 
-// ---- REQUEST DTOS ----
+// UpdateEmployeeRequest represents fields for updating an employee.
 type UpdateEmployeeRequest struct {
 	ID           int64                           `json:"id" validate:"required"`
 	DateOfBirth  *time.Time                      `json:"dateOfBirth" validate:"omitempty,datetime"`
@@ -14,6 +14,7 @@ type UpdateEmployeeRequest struct {
 	Details      []*UpdateEmployeeDetailsRequest `json:"details" validate:"omitempty,dive"`
 }
 
+// PersonnelPaginatedQueryParameters captures filters for personnel listing.
 type PersonnelPaginatedQueryParameters struct {
 	LanguageCode string
 	UID          string
@@ -25,8 +26,7 @@ type PersonnelPaginatedQueryParameters struct {
 	Page         int64
 }
 
-// ---- RESPONSE DTOS ----
-
+// EmployeeResponse represents the full employee profile payload.
 type EmployeeResponse struct {
 	ID        int64     `json:"id"`
 	UniqueID  string    `json:"uniqueID"`
@@ -48,6 +48,7 @@ type EmployeeResponse struct {
 	Socials                                []*EmployeeSocialResponse                               `json:"socials,omitempty"`
 }
 
+// PersonnelProfileData is a flattened view for personnel listings.
 type PersonnelProfileData struct {
 	Fullname              string                   `json:"fullname"`
 	UID                   string                   `json:"uid"`

@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// GenerateNumericUniqueID returns a random numeric ID in XXXX-XXXX format.
 func GenerateNumericUniqueID() (string, error) {
 	// Initialize a strings.Builder for efficient string concatenation.
 	// We know the final string length will be 9 (8 digits + 1 hyphen).

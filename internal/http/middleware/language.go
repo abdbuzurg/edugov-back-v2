@@ -1,3 +1,4 @@
+// Package middleware provides HTTP middlewares for request processing.
 package middleware
 
 import (
@@ -10,6 +11,7 @@ type ctxKey string
 
 const ctxKeyLang ctxKey = "lang"
 
+// LangFromContext reads the language code from context.
 func LangFromContext(ctx context.Context) (string, bool) {
 	v, ok := ctx.Value(ctxKeyLang).(string)
 	if !ok || v == "" {
@@ -18,6 +20,7 @@ func LangFromContext(ctx context.Context) (string, bool) {
 	return v, true
 }
 
+// MustLang returns the language code or a default.
 func MustLang(ctx context.Context) string {
 	if v, ok := LangFromContext(ctx); ok {
 		return v
@@ -25,6 +28,7 @@ func MustLang(ctx context.Context) string {
 	return "ru"
 }
 
+// LanguageMiddleware reads Accept-Language and stores it in context.
 func LanguageMiddleware() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

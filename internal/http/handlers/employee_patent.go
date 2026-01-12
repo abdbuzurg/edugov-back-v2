@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeePatent handles creation requests for patents.
 func (h *Handlers) CreateEmployeePatent(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeePatentRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -24,6 +25,7 @@ func (h *Handlers) CreateEmployeePatent(w http.ResponseWriter, r *http.Request) 
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeePatents lists patents for an employee.
 func (h *Handlers) GetEmployeePatents(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -46,6 +48,7 @@ func (h *Handlers) GetEmployeePatents(w http.ResponseWriter, r *http.Request) {
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeePatent handles update requests for patents.
 func (h *Handlers) UpdateEmployeePatent(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeePatentRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -62,6 +65,7 @@ func (h *Handlers) UpdateEmployeePatent(w http.ResponseWriter, r *http.Request) 
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeePatent handles deletion requests for patents.
 func (h *Handlers) DeleteEmployeePatent(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {

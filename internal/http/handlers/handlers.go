@@ -1,3 +1,4 @@
+// Package handlers hosts HTTP handlers and shared helpers.
 package handlers
 
 import (
@@ -15,16 +16,19 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// Handlers wires HTTP handlers to the service layer.
 type Handlers struct {
 	service *service.Service
 }
 
+// New constructs a Handlers instance.
 func New(service *service.Service) *Handlers {
 	return &Handlers{
 		service: service,
 	}
 }
 
+// ErrorResponse is the standard error payload.
 type ErrorResponse struct {
 	Error  string            `json:"error"`
 	Code   apperr.Code       `json:"code"`
@@ -50,6 +54,7 @@ func statusFromCode(code apperr.Code) int {
 	}
 }
 
+// WriteError serializes an application error to the response.
 func WriteError(w http.ResponseWriter, r *http.Request, err error) {
 	// If the client disconnected/canceled the request, usually don't write response.
 	if errors.Is(err, context.Canceled) {
@@ -91,12 +96,14 @@ func WriteError(w http.ResponseWriter, r *http.Request, err error) {
 	})
 }
 
+// WriteJSON writes a JSON response with a status code.
 func WriteJSON(w http.ResponseWriter, status int, v any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(v)
 }
 
+// DecodeJSON decodes a JSON body into dst with strict field checks.
 func DecodeJSON(r *http.Request, dst any) error {
 	dec := json.NewDecoder(r.Body)
 	dec.DisallowUnknownFields() // helps catch client typos early

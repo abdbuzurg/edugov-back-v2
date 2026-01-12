@@ -2,8 +2,7 @@ package dto
 
 import "time"
 
-// ---- REQUEST DTOs ----
-
+// CreateEmployeePatentRequest represents input for creating a patent.
 type CreateEmployeePatentRequest struct {
 	EmployeeID   int64  `json:"employeeID" validate:"required,min=1"`
 	LanguageCode string `json:"-" validate:"required,len=2"`
@@ -11,14 +10,14 @@ type CreateEmployeePatentRequest struct {
 	Description  string `json:"description" validate:"required"`
 }
 
+// UpdateEmployeePatentRequest represents input for updating a patent.
 type UpdateEmployeePatentRequest struct {
 	ID          int64   `json:"id" validate:"required,min=1"`
 	PatentTitle *string `json:"patentTitle" validate:"omitempty"`
 	Description *string `json:"description" validate:"omitempty"`
 }
 
-// ---- RESPONSE DTOs ----
-
+// EmployeePatentResponse represents a patent in responses.
 type EmployeePatentResponse struct {
 	ID          int64     `json:"id"`
 	PatentTitle string    `json:"patentTitle"`

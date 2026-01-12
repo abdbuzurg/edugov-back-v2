@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// CreateEmployeeResearchActivity creates a research activity entry.
 func (s *Service) CreateEmployeeResearchActivity(ctx context.Context, req *dto.CreateEmployeeResearchActivityRequest) (*dto.EmployeeResearchActivityResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -40,6 +41,7 @@ func (s *Service) CreateEmployeeResearchActivity(ctx context.Context, req *dto.C
 	}, nil
 }
 
+// UpdateEmployeeResearchActivity updates a research activity entry.
 func (s *Service) UpdateEmployeeResearchActivity(ctx context.Context, req *dto.UpdateEmployeeResearchActivityRequest) (*dto.EmployeeResearchActivityResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -71,6 +73,7 @@ func (s *Service) UpdateEmployeeResearchActivity(ctx context.Context, req *dto.U
 	}, nil
 }
 
+// DeleteEmployeeResearchActivity removes a research activity entry.
 func (s *Service) DeleteEmployeeResearchActivity(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -92,6 +95,7 @@ func (s *Service) DeleteEmployeeResearchActivity(ctx context.Context, id int64) 
 	return nil
 }
 
+// GetEmployeeResearchActivitiesByEmployeeIDAndLanguageCode lists research activities for an employee.
 func (s *Service) GetEmployeeResearchActivitiesByEmployeeIDAndLanguageCode(ctx context.Context, employeeID int64, langCode string) ([]*dto.EmployeeResearchActivityResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid id", map[string]string{

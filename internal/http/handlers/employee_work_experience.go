@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeeWorkExperience handles creation requests for work experience.
 func (h *Handlers) CreateEmployeeWorkExperience(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeeWorkExperienceRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -24,6 +25,7 @@ func (h *Handlers) CreateEmployeeWorkExperience(w http.ResponseWriter, r *http.R
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeeWorkExperiences lists work experiences for an employee.
 func (h *Handlers) GetEmployeeWorkExperiences(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -50,6 +52,7 @@ func (h *Handlers) GetEmployeeWorkExperiences(w http.ResponseWriter, r *http.Req
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeeWorkExperience handles update requests for work experience.
 func (h *Handlers) UpdateEmployeeWorkExperience(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeeWorkExperienceRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -66,6 +69,7 @@ func (h *Handlers) UpdateEmployeeWorkExperience(w http.ResponseWriter, r *http.R
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeeWorkExperience handles deletion requests for work experience.
 func (h *Handlers) DeleteEmployeeWorkExperience(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {

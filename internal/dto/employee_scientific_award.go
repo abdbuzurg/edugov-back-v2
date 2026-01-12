@@ -2,7 +2,7 @@ package dto
 
 import "time"
 
-// ---- REQUEST DTOs ----
+// CreateEmployeeScientificAwardRequest represents input for creating a scientific award.
 type CreateEmployeeScientificAwardRequest struct {
 	EmployeeID           int64  `json:"employeeID" validate:"required,min=1"`
 	LanguageCode         string `json:"-" validate:"required,len=2"`
@@ -10,14 +10,14 @@ type CreateEmployeeScientificAwardRequest struct {
 	GivenBy              string `json:"givenBy" validate:"required"`
 }
 
+// UpdateEmployeeScientificAwardRequest represents input for updating a scientific award.
 type UpdateEmployeeScientificAwardRequest struct {
 	ID                   int64   `json:"id" validate:"required,min=1"`
 	ScientificAwardTitle *string `json:"scientificAwardTitle" validate:"omitempty"`
 	GivenBy              *string `json:"givenBy" validate:"omitempty"`
 }
 
-// ---- RESPONSE DTOs ----
-
+// EmployeeScientificAwardResponse represents a scientific award in responses.
 type EmployeeScientificAwardResponse struct {
 	ID                   int64     `json:"id"`
 	ScientificAwardTitle string    `json:"scientificAwardTitle"`

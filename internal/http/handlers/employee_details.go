@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// GetEmployeeDetails returns details records for an employee.
 func (h *Handlers) GetEmployeeDetails(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -23,6 +24,7 @@ func (h *Handlers) GetEmployeeDetails(w http.ResponseWriter, r *http.Request) {
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeeDetails applies batch updates to employee details.
 func (h *Handlers) UpdateEmployeeDetails(w http.ResponseWriter, r *http.Request) {
 	var body dto.UpdateFullEmployeeData
 	if err := DecodeJSON(r, &body); err != nil {

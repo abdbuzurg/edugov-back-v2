@@ -1,3 +1,4 @@
+// Package db provides the database pool and transactional store helpers.
 package db
 
 import (
@@ -9,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+// NewPool creates a configured pgx connection pool.
 func NewPool(ctx context.Context, dbURL string) (*pgxpool.Pool, error) {
 	cfg, err := pgxpool.ParseConfig(dbURL)
 	if err != nil {
@@ -22,11 +24,13 @@ func NewPool(ctx context.Context, dbURL string) (*pgxpool.Pool, error) {
 	return pgxpool.NewWithConfig(ctx, cfg)
 }
 
+// Store wraps sqlc queries and the underlying pool for transactions.
 type Store struct {
 	*sqlc.Queries
 	pool *pgxpool.Pool
 }
 
+// NewStore builds a Store from the pgx pool.
 func NewStore(pool *pgxpool.Pool) *Store {
 	return &Store{
 		Queries: sqlc.New(pool),

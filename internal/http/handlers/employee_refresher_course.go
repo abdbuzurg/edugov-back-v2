@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeeRefresherCourse handles creation requests for refresher courses.
 func (h *Handlers) CreateEmployeeRefresherCourse(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeeRefresherCourseRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -24,6 +25,7 @@ func (h *Handlers) CreateEmployeeRefresherCourse(w http.ResponseWriter, r *http.
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeeRefresherCourses lists refresher courses for an employee.
 func (h *Handlers) GetEmployeeRefresherCourses(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -46,6 +48,7 @@ func (h *Handlers) GetEmployeeRefresherCourses(w http.ResponseWriter, r *http.Re
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeeRefresherCourse handles update requests for refresher courses.
 func (h *Handlers) UpdateEmployeeRefresherCourse(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeeRefresherCourseRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -62,6 +65,7 @@ func (h *Handlers) UpdateEmployeeRefresherCourse(w http.ResponseWriter, r *http.
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeeRefresherCourse handles deletion requests for refresher courses.
 func (h *Handlers) DeleteEmployeeRefresherCourse(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {

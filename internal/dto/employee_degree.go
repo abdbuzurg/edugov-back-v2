@@ -2,8 +2,7 @@ package dto
 
 import "time"
 
-// ---- REQUEST DTOs ----
-
+// CreateEmployeeDegreeRequest represents input for creating a degree.
 type CreateEmployeeDegreeRequest struct {
 	EmployeeID         int64     `json:"employeeID" validate:"required,min=1"`
 	LanguageCode       string    `json:"-" validate:"required,len=2"`
@@ -16,6 +15,7 @@ type CreateEmployeeDegreeRequest struct {
 	DateDegreeRecieved time.Time `json:"dateDegreeRecieved" validate:"required"`
 }
 
+// UpdateEmployeeDegreeRequest represents input for updating a degree.
 type UpdateEmployeeDegreeRequest struct {
 	ID                 int64      `json:"id" validate:"required,min=1"`
 	DegreeLevel        *string    `json:"degreeLevel" validate:"omitempty"`
@@ -27,7 +27,7 @@ type UpdateEmployeeDegreeRequest struct {
 	DateDegreeRecieved *time.Time `json:"dateDegreeRecieved" validate:"omitempty"`
 }
 
-// ---- RESPONSE DTOs ----
+// EmployeeDegreeResponse represents a degree record in responses.
 type EmployeeDegreeResponse struct {
 	ID                 int64     `json:"id"`
 	DegreeLevel        string    `json:"degreeLevel"`

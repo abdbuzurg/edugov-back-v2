@@ -19,6 +19,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// main boots the HTTP server with configured dependencies.
 func main() {
 	addr := viper.GetString("server.addr")
 	dbURL := viper.GetString("db.url")
@@ -61,6 +62,7 @@ func main() {
 	log.Println("Server shutdown gracefully")
 }
 
+// init loads configuration before main starts.
 func init() {
 	if err := config.Init(); err != nil {
 		log.Fatal(err)

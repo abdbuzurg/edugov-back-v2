@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// CreateEmployeeScientificAward creates a scientific award entry.
 func (s *Service) CreateEmployeeScientificAward(ctx context.Context, req *dto.CreateEmployeeScientificAwardRequest) (*dto.EmployeeScientificAwardResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -40,6 +41,7 @@ func (s *Service) CreateEmployeeScientificAward(ctx context.Context, req *dto.Cr
 	}, nil
 }
 
+// UpdateEmployeeScientificAward updates a scientific award entry.
 func (s *Service) UpdateEmployeeScientificAward(ctx context.Context, req *dto.UpdateEmployeeScientificAwardRequest) (*dto.EmployeeScientificAwardResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -71,6 +73,7 @@ func (s *Service) UpdateEmployeeScientificAward(ctx context.Context, req *dto.Up
 	}, nil
 }
 
+// DeleteEmployeeScientificAward removes a scientific award entry.
 func (s *Service) DeleteEmployeeScientificAward(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -91,6 +94,7 @@ func (s *Service) DeleteEmployeeScientificAward(ctx context.Context, id int64) e
 	return nil
 }
 
+// GetEmployeeScientificAwardsByEmployeeIDAndLanguageCode lists scientific awards for an employee.
 func (s *Service) GetEmployeeScientificAwardsByEmployeeIDAndLanguageCode(ctx context.Context, employeeID int64, langCode string) ([]*dto.EmployeeScientificAwardResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid id", map[string]string{

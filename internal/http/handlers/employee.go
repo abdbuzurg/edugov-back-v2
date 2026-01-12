@@ -12,6 +12,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// GetEmployee returns the full employee profile by unique ID.
 func (h *Handlers) GetEmployee(w http.ResponseWriter, r *http.Request) {
 	uniqueID, err := h.readStringQueryParam(r, "uniqueID")
 	if err != nil {
@@ -30,6 +31,7 @@ func (h *Handlers) GetEmployee(w http.ResponseWriter, r *http.Request) {
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// GetEmployeeProfilePicture serves the stored profile picture by UID.
 func (h *Handlers) GetEmployeeProfilePicture(w http.ResponseWriter, r *http.Request) {
 	uid := strings.TrimSpace(chi.URLParam(r, "uid"))
 	if uid == "" {
@@ -67,6 +69,7 @@ func (h *Handlers) GetEmployeeProfilePicture(w http.ResponseWriter, r *http.Requ
 	http.ServeFile(w, r, filePath)
 }
 
+// UpdateEmployeeProfilePicture replaces an employee profile picture by UID.
 func (h *Handlers) UpdateEmployeeProfilePicture(w http.ResponseWriter, r *http.Request) {
 	uid := strings.TrimSpace(chi.URLParam(r, "uid"))
 	if uid == "" {

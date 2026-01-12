@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// CreateEmployeePublication creates a publication entry.
 func (s *Service) CreateEmployeePublication(ctx context.Context, req *dto.CreateEmployeePublicationRequest) (*dto.EmployeePublicationResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -37,6 +38,7 @@ func (s *Service) CreateEmployeePublication(ctx context.Context, req *dto.Create
 	}, nil
 }
 
+// UpdateEmployeePublication updates an existing publication.
 func (s *Service) UpdateEmployeePublication(ctx context.Context, req *dto.UpdateEmployeePublicationRequest) (*dto.EmployeePublicationResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -65,6 +67,7 @@ func (s *Service) UpdateEmployeePublication(ctx context.Context, req *dto.Update
 	}, nil
 }
 
+// DeleteEmployeePublication removes a publication entry.
 func (s *Service) DeleteEmployeePublication(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -84,6 +87,7 @@ func (s *Service) DeleteEmployeePublication(ctx context.Context, id int64) error
 	return nil
 }
 
+// GetEmployeePublicationByEmployeeIDAndLanguageCode lists publications for an employee.
 func (s *Service) GetEmployeePublicationByEmployeeIDAndLanguageCode(ctx context.Context, employeeID int64, langCode string) ([]*dto.EmployeePublicationResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid id", map[string]string{

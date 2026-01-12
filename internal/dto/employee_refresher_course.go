@@ -2,8 +2,7 @@ package dto
 
 import "time"
 
-// ---- REQUEST DTOs ----
-
+// CreateEmployeeRefresherCourseRequest represents input for creating a course.
 type CreateEmployeeRefresherCourseRequest struct {
 	EmployeeID   int64     `json:"employeeID" validate:"required,min=1"`
 	LanguageCode string    `json:"-" validate:"required,len=2"`
@@ -12,6 +11,7 @@ type CreateEmployeeRefresherCourseRequest struct {
 	DateEnd      time.Time `json:"dateEnd" validate:"required"`
 }
 
+// UpdateEmployeeRefresherCourseRequest represents input for updating a course.
 type UpdateEmployeeRefresherCourseRequest struct {
 	ID          int64      `json:"id" validate:"required,min=1"`
 	CourseTitle *string    `json:"courseTitle" validate:"omitempty"`
@@ -19,8 +19,7 @@ type UpdateEmployeeRefresherCourseRequest struct {
 	DateEnd     *time.Time `json:"dateEnd" validate:"omitempty"`
 }
 
-// ---- RESPONSE DTOs ----
-
+// EmployeeRefresherCourseResponse represents a refresher course in responses.
 type EmployeeRefresherCourseResponse struct {
 	ID          int64     `json:"id"`
 	CourseTitle string    `json:"courseTitle"`

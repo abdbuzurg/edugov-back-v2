@@ -1,3 +1,4 @@
+// Package apperr defines structured application errors with HTTP-friendly codes.
 package apperr
 
 import (
@@ -7,6 +8,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// Code identifies the application error category.
 type Code string
 
 const (
@@ -29,6 +31,7 @@ type Error struct {
 	cause  error
 }
 
+// Error implements the error interface.
 func (e *Error) Error() string {
 	if e.cause == nil {
 		return fmt.Sprintf("%s: %s", e.code, e.msg)
@@ -36,10 +39,14 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("%s: %s: %v", e.code, e.msg, e.cause)
 }
 
+// Unwrap exposes the underlying cause, if any.
 func (e *Error) Unwrap() error { return e.cause }
 
-func (e *Error) Code() Code                { return e.code }
-func (e *Error) Msg() string               { return e.msg }
+// Code returns the error classification.
+func (e *Error) Code() Code { return e.code }
+// Msg returns the client-safe message.
+func (e *Error) Msg() string { return e.msg }
+// Fields returns a copy of field-level validation errors.
 func (e *Error) Fields() map[string]string { return cloneMap(e.fields) }
 
 func cloneMap(in map[string]string) map[string]string {
@@ -53,6 +60,7 @@ func cloneMap(in map[string]string) map[string]string {
 	return out
 }
 
+// As extracts an *Error from a wrapped error chain.
 func As(err error) (*Error, bool) {
 	var ae *Error
 	if errors.As(err, &ae) {
@@ -61,14 +69,20 @@ func As(err error) (*Error, bool) {
 	return nil, false
 }
 
+// Validation builds a validation error with optional field-level details.
 func Validation(msg string, fields map[string]string) error {
 	return &Error{code: CodeValidation, msg: msg, fields: cloneMap(fields)}
 }
-func NotFound(msg string) error     { return &Error{code: CodeNotFound, msg: msg} }
-func Conflict(msg string) error     { return &Error{code: CodeConflict, msg: msg} }
+// NotFound builds a not-found error.
+func NotFound(msg string) error { return &Error{code: CodeNotFound, msg: msg} }
+// Conflict builds a conflict error.
+func Conflict(msg string) error { return &Error{code: CodeConflict, msg: msg} }
+// Unauthorized builds an unauthorized error.
 func Unauthorized(msg string) error { return &Error{code: CodeUnauthorized, msg: msg} }
-func Forbidden(msg string) error    { return &Error{code: CodeForbidden, msg: msg} }
+// Forbidden builds a forbidden error.
+func Forbidden(msg string) error { return &Error{code: CodeForbidden, msg: msg} }
 
+// Unavailable builds a service-unavailable error.
 func Unavailable(msg string, cause error) error {
 	if msg == "" {
 		msg = "service unavailable"
@@ -76,6 +90,7 @@ func Unavailable(msg string, cause error) error {
 	return &Error{code: CodeUnavailable, msg: msg, cause: cause}
 }
 
+// Internal builds an internal error with an optional cause.
 func Internal(msg string, cause error) error {
 	if msg == "" {
 		msg = "internal error"
@@ -83,6 +98,7 @@ func Internal(msg string, cause error) error {
 	return &Error{code: CodeInternal, msg: msg, cause: cause}
 }
 
+// ValidationFromValidator converts validator errors into Validation errors.
 func ValidationFromValidator(err error) error {
 	if err == nil {
 		return nil

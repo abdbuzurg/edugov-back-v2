@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+// CreateEmployeeParticipationInProfessionalCommunity creates a community participation entry.
 func (s *Service) CreateEmployeeParticipationInProfessionalCommunity(ctx context.Context, req *dto.CreateEmployeeParticipationInProfessionalCommunityRequest) (*dto.EmployeeParticipationInProfessionalCommunityResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -37,6 +38,7 @@ func (s *Service) CreateEmployeeParticipationInProfessionalCommunity(ctx context
 	}, nil
 }
 
+// UpdateEmployeeParticipationInProfessionalCommunity updates a community participation entry.
 func (s *Service) UpdateEmployeeParticipationInProfessionalCommunity(ctx context.Context, req *dto.UpdateEmployeeParticipationInProfessionalCommunityRequest) (*dto.EmployeeParticipationInProfessionalCommunityResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -63,6 +65,7 @@ func (s *Service) UpdateEmployeeParticipationInProfessionalCommunity(ctx context
 	}, nil
 }
 
+// DeleteEmployeeParticipationInProfessionalCommunity removes a community participation entry.
 func (s *Service) DeleteEmployeeParticipationInProfessionalCommunity(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -81,6 +84,7 @@ func (s *Service) DeleteEmployeeParticipationInProfessionalCommunity(ctx context
 	return nil
 }
 
+// GetEmployeeParticipationInProfessionalCommunitiesByEmployeeIDAndLanguageCode lists community participation entries.
 func (s *Service) GetEmployeeParticipationInProfessionalCommunitiesByEmployeeIDAndLanguageCode(ctx context.Context, employeeID int64, langCode string) ([]*dto.EmployeeParticipationInProfessionalCommunityResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid id", map[string]string{

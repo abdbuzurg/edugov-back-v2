@@ -13,6 +13,7 @@ import (
 
 const ()
 
+// GetEmployeeDetailsByEmployeeID returns all details records for an employee.
 func (s *Service) GetEmployeeDetailsByEmployeeID(ctx context.Context, employeeID int64) ([]*dto.EmployeeDetailsResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid employee_id", map[string]string{
@@ -51,6 +52,7 @@ func (s *Service) GetEmployeeDetailsByEmployeeID(ctx context.Context, employeeID
 	return result, nil
 }
 
+// UpdateEmployeeDetails applies a batch of updates for employee details.
 func (s *Service) UpdateEmployeeDetails(ctx context.Context, req []dto.UpdateEmployeeDetailsRequest) ([]*dto.EmployeeDetailsResponse, error) {
 	for _, details := range req {
 		if err := s.validator.Struct(details); err != nil {

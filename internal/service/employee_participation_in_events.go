@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+// CreateEmployeeParticipationInEvent creates an event participation entry.
 func (s *Service) CreateEmployeeParticipationInEvent(ctx context.Context, req *dto.CreateEmployeeParticipationInEventRequest) (*dto.EmployeeParticipationInEventResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -42,6 +43,7 @@ func (s *Service) CreateEmployeeParticipationInEvent(ctx context.Context, req *d
 	}, nil
 }
 
+// UpdateEmployeeParticipationInEvent updates an event participation entry.
 func (s *Service) UpdateEmployeeParticipationInEvent(ctx context.Context, req *dto.UpdateEmployeeParticipationInEventRequest) (*dto.EmployeeParticipationInEventResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
 		return nil, apperr.ValidationFromValidator(err)
@@ -75,6 +77,7 @@ func (s *Service) UpdateEmployeeParticipationInEvent(ctx context.Context, req *d
 	}, nil
 }
 
+// DeleteEmployeeParticipationInEvent removes an event participation entry.
 func (s *Service) DeleteEmployeeParticipationInEvent(ctx context.Context, id int64) error {
 	if id <= 0 {
 		return apperr.Validation("invalid id", map[string]string{
@@ -93,6 +96,7 @@ func (s *Service) DeleteEmployeeParticipationInEvent(ctx context.Context, id int
 	return nil
 }
 
+// GetEmployeeParticipationInEventsByEmployeeIDAndLanguageCode lists event participations for an employee.
 func (s *Service) GetEmployeeParticipationInEventsByEmployeeIDAndLanguageCode(ctx context.Context, employeeID int64, langCode string) ([]*dto.EmployeeParticipationInEventResponse, error) {
 	if employeeID <= 0 {
 		return nil, apperr.Validation("invalid employeeID", map[string]string{

@@ -1,3 +1,4 @@
+// Package config loads application configuration via Viper.
 package config
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Init configures Viper defaults and reads config.yaml.
 func Init() error {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")

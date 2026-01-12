@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// CreateEmployeeScientificAward handles creation requests for scientific awards.
 func (h *Handlers) CreateEmployeeScientificAward(w http.ResponseWriter, r *http.Request) {
 	var req dto.CreateEmployeeScientificAwardRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -24,6 +25,7 @@ func (h *Handlers) CreateEmployeeScientificAward(w http.ResponseWriter, r *http.
 	WriteJSON(w, http.StatusCreated, resp)
 }
 
+// GetEmployeeScientificAwards lists scientific awards for an employee.
 func (h *Handlers) GetEmployeeScientificAwards(w http.ResponseWriter, r *http.Request) {
 	employeeID, err := h.readInt64QueryParam(r, "employeeID")
 	if err != nil {
@@ -50,6 +52,7 @@ func (h *Handlers) GetEmployeeScientificAwards(w http.ResponseWriter, r *http.Re
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// UpdateEmployeeScientificAward handles update requests for scientific awards.
 func (h *Handlers) UpdateEmployeeScientificAward(w http.ResponseWriter, r *http.Request) {
 	var req dto.UpdateEmployeeScientificAwardRequest
 	if err := DecodeJSON(r, &req); err != nil {
@@ -66,6 +69,7 @@ func (h *Handlers) UpdateEmployeeScientificAward(w http.ResponseWriter, r *http.
 	WriteJSON(w, http.StatusOK, resp)
 }
 
+// DeleteEmployeeScientificAward handles deletion requests for scientific awards.
 func (h *Handlers) DeleteEmployeeScientificAward(w http.ResponseWriter, r *http.Request) {
 	id, err := h.readInt64URLParam(r, "id")
 	if err != nil {
