@@ -13,34 +13,66 @@ const createEmployeePublication = `-- name: CreateEmployeePublication :one
 INSERT INTO employee_publications(
   employee_id,
   language_code,
-  publication_title,
-  link_to_publication
+  rf_publication_type_id,
+  name,
+  type,
+  authors,
+  journal_name,
+  volume,
+  number,
+  pages,
+  year,
+  link
 ) VALUES (
-  $1, $2, $3, $4
-) RETURNING id, employee_id, language_code, publication_title, link_to_publication, created_at, updated_at
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
+) RETURNING id, employee_id, language_code, rf_publication_type_id, name, type, authors, journal_name, volume, number, pages, year, link, created_at, updated_at
 `
 
 type CreateEmployeePublicationParams struct {
-	EmployeeID        int64  `json:"employee_id"`
-	LanguageCode      string `json:"language_code"`
-	PublicationTitle  string `json:"publication_title"`
-	LinkToPublication string `json:"link_to_publication"`
+	EmployeeID          int64   `json:"employee_id"`
+	LanguageCode        string  `json:"language_code"`
+	RfPublicationTypeID int64   `json:"rf_publication_type_id"`
+	Name                string  `json:"name"`
+	Type                string  `json:"type"`
+	Authors             *string `json:"authors"`
+	JournalName         *string `json:"journal_name"`
+	Volume              *string `json:"volume"`
+	Number              *string `json:"number"`
+	Pages               *string `json:"pages"`
+	Year                *int32  `json:"year"`
+	Link                string  `json:"link"`
 }
 
 func (q *Queries) CreateEmployeePublication(ctx context.Context, arg CreateEmployeePublicationParams) (EmployeePublication, error) {
 	row := q.db.QueryRow(ctx, createEmployeePublication,
 		arg.EmployeeID,
 		arg.LanguageCode,
-		arg.PublicationTitle,
-		arg.LinkToPublication,
+		arg.RfPublicationTypeID,
+		arg.Name,
+		arg.Type,
+		arg.Authors,
+		arg.JournalName,
+		arg.Volume,
+		arg.Number,
+		arg.Pages,
+		arg.Year,
+		arg.Link,
 	)
 	var i EmployeePublication
 	err := row.Scan(
 		&i.ID,
 		&i.EmployeeID,
 		&i.LanguageCode,
-		&i.PublicationTitle,
-		&i.LinkToPublication,
+		&i.RfPublicationTypeID,
+		&i.Name,
+		&i.Type,
+		&i.Authors,
+		&i.JournalName,
+		&i.Volume,
+		&i.Number,
+		&i.Pages,
+		&i.Year,
+		&i.Link,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -58,7 +90,7 @@ func (q *Queries) DeleteEmployeePublication(ctx context.Context, id int64) error
 }
 
 const getEmployeePublicationByID = `-- name: GetEmployeePublicationByID :one
-SELECT id, employee_id, language_code, publication_title, link_to_publication, created_at, updated_at
+SELECT id, employee_id, language_code, rf_publication_type_id, name, type, authors, journal_name, volume, number, pages, year, link, created_at, updated_at
 FROM employee_publications
 WHERE id = $1
 `
@@ -70,8 +102,16 @@ func (q *Queries) GetEmployeePublicationByID(ctx context.Context, id int64) (Emp
 		&i.ID,
 		&i.EmployeeID,
 		&i.LanguageCode,
-		&i.PublicationTitle,
-		&i.LinkToPublication,
+		&i.RfPublicationTypeID,
+		&i.Name,
+		&i.Type,
+		&i.Authors,
+		&i.JournalName,
+		&i.Volume,
+		&i.Number,
+		&i.Pages,
+		&i.Year,
+		&i.Link,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -79,7 +119,7 @@ func (q *Queries) GetEmployeePublicationByID(ctx context.Context, id int64) (Emp
 }
 
 const getEmployeePublicationsByEmployeeIDAndLanguageCode = `-- name: GetEmployeePublicationsByEmployeeIDAndLanguageCode :many
-SELECT id, employee_id, language_code, publication_title, link_to_publication, created_at, updated_at
+SELECT id, employee_id, language_code, rf_publication_type_id, name, type, authors, journal_name, volume, number, pages, year, link, created_at, updated_at
 FROM employee_publications
 WHERE employee_id = $1 AND language_code = $2
 `
@@ -102,8 +142,16 @@ func (q *Queries) GetEmployeePublicationsByEmployeeIDAndLanguageCode(ctx context
 			&i.ID,
 			&i.EmployeeID,
 			&i.LanguageCode,
-			&i.PublicationTitle,
-			&i.LinkToPublication,
+			&i.RfPublicationTypeID,
+			&i.Name,
+			&i.Type,
+			&i.Authors,
+			&i.JournalName,
+			&i.Volume,
+			&i.Number,
+			&i.Pages,
+			&i.Year,
+			&i.Link,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 		); err != nil {
@@ -120,28 +168,64 @@ func (q *Queries) GetEmployeePublicationsByEmployeeIDAndLanguageCode(ctx context
 const updateEmployeePublication = `-- name: UpdateEmployeePublication :one
 UPDATE employee_publications 
 SET 
-  publication_title = COALESCE($1, publication_title),
-  link_to_publication = COALESCE($2, link_to_publication),
+  rf_publication_type_id = COALESCE($1, rf_publication_type_id),
+  name = COALESCE($2, name),
+  type = COALESCE($3, type),
+  authors = COALESCE($4, authors),
+  journal_name = COALESCE($5, journal_name),
+  volume = COALESCE($6, volume),
+  number = COALESCE($7, number),
+  pages = COALESCE($8, pages),
+  year = COALESCE($9, year),
+  link = COALESCE($10, link),
   updated_at = now()
-WHERE id = $3
-RETURNING id, employee_id, language_code, publication_title, link_to_publication, created_at, updated_at
+WHERE id = $11
+RETURNING id, employee_id, language_code, rf_publication_type_id, name, type, authors, journal_name, volume, number, pages, year, link, created_at, updated_at
 `
 
 type UpdateEmployeePublicationParams struct {
-	PublicationTitle  *string `json:"publication_title"`
-	LinkToPublication *string `json:"link_to_publication"`
-	ID                int64   `json:"id"`
+	RfPublicationTypeID *int64  `json:"rf_publication_type_id"`
+	Name                *string `json:"name"`
+	Type                *string `json:"type"`
+	Authors             *string `json:"authors"`
+	JournalName         *string `json:"journal_name"`
+	Volume              *string `json:"volume"`
+	Number              *string `json:"number"`
+	Pages               *string `json:"pages"`
+	Year                *int32  `json:"year"`
+	Link                *string `json:"link"`
+	ID                  int64   `json:"id"`
 }
 
 func (q *Queries) UpdateEmployeePublication(ctx context.Context, arg UpdateEmployeePublicationParams) (EmployeePublication, error) {
-	row := q.db.QueryRow(ctx, updateEmployeePublication, arg.PublicationTitle, arg.LinkToPublication, arg.ID)
+	row := q.db.QueryRow(ctx, updateEmployeePublication,
+		arg.RfPublicationTypeID,
+		arg.Name,
+		arg.Type,
+		arg.Authors,
+		arg.JournalName,
+		arg.Volume,
+		arg.Number,
+		arg.Pages,
+		arg.Year,
+		arg.Link,
+		arg.ID,
+	)
 	var i EmployeePublication
 	err := row.Scan(
 		&i.ID,
 		&i.EmployeeID,
 		&i.LanguageCode,
-		&i.PublicationTitle,
-		&i.LinkToPublication,
+		&i.RfPublicationTypeID,
+		&i.Name,
+		&i.Type,
+		&i.Authors,
+		&i.JournalName,
+		&i.Volume,
+		&i.Number,
+		&i.Pages,
+		&i.Year,
+		&i.Link,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)

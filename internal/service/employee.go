@@ -5,7 +5,10 @@ import (
 	"edugov-back-v2/internal/apperr"
 	"edugov-back-v2/internal/db/sqlc"
 	"edugov-back-v2/internal/dto"
+	"errors"
 	"fmt"
+
+	"github.com/jackc/pgx/v5"
 )
 
 // GetEmployeeByUniqueID returns a full employee profile by unique ID and language.
@@ -20,6 +23,10 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 	err := s.store.ExecTx(ctx, func(q *sqlc.Queries) error {
 		employee, err := q.GetEmployeeByUniqueIdentifier(ctx, uniqueID)
 		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return nil
+			}
+
 			if pgErr := s.asPgError(err); pgErr != nil {
 				return s.pgErrToAppErr(pgErr)
 			}
@@ -38,6 +45,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			result.Gender = *employee.Gender
 		}
 
+		// Degree
 		employeeDetails, err := q.GetEmployeeDetailsByEmployeeID(ctx, employee.ID)
 		if err != nil {
 			if pgErr := s.asPgError(err); pgErr != nil {
@@ -77,8 +85,9 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 		for _, ed := range employeeDegrees {
 			result.Degrees = append(result.Degrees, &dto.EmployeeDegreeResponse{
 				ID:                 ed.ID,
+				RfInstitutionID:    ed.RfInstitutionID,
 				DegreeLevel:        ed.DegreeLevel,
-				UniversityName:     ed.UniversityName,
+				InstitutionName:    ed.InstitutionName,
 				Speciality:         ed.Speciality,
 				DateStart:          ed.DateStart.Time,
 				DateEnd:            ed.DateEnd.Time,
@@ -89,6 +98,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			})
 		}
 
+		// Work Experience
 		employeeWorkExperiencesArgs := sqlc.GetEmployeeWorkExperiencesByEmployeeIDAndLanguageCodeParams{
 			EmployeeID:   employee.ID,
 			LanguageCode: langCode,
@@ -115,6 +125,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			})
 		}
 
+		// Main Research Area
 		employeeMRAsArgs := sqlc.GetEmployeeMainResearchAreasByEmployeeIDAndLanguageCodeParams{
 			EmployeeID:   employee.ID,
 			LanguageCode: langCode,
@@ -155,6 +166,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			result.MainResearchAreas = append(result.MainResearchAreas, mainResearchArea)
 		}
 
+		// Publications
 		employeePublicationsArgs := sqlc.GetEmployeePublicationsByEmployeeIDAndLanguageCodeParams{
 			EmployeeID:   employee.ID,
 			LanguageCode: langCode,
@@ -168,15 +180,10 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			return apperr.Internal("internal error", fmt.Errorf("GetEmployeeByUniqueID -> GetEmployeePublicationsByEmployeeIDAndLanguageCode params %v: %w", employeePublicationsArgs, err))
 		}
 		for _, ep := range employeePublications {
-			result.Publications = append(result.Publications, &dto.EmployeePublicationResponse{
-				ID:                ep.ID,
-				PublicationTitle:  ep.PublicationTitle,
-				LinkToPublication: ep.LinkToPublication,
-				CreatedAt:         ep.CreatedAt.Time,
-				UpdatedAt:         ep.UpdatedAt.Time,
-			})
+			result.Publications = append(result.Publications, s.mapEmployeePublicationToResponse(ep))
 		}
 
+		// Scientific Award
 		employeeScientificAwardsArgs := sqlc.GetEmployeeScientificAwardsByEmployeeIDAndLanguageCodeParams{
 			EmployeeID:   employee.ID,
 			LanguageCode: langCode,
@@ -199,6 +206,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			})
 		}
 
+		// Patent
 		employeePatentsArgs := sqlc.GetEmployeePatentsByEmployeeIDAndLanguageCodeParams{
 			EmployeeID:   employee.ID,
 			LanguageCode: langCode,
@@ -221,6 +229,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			})
 		}
 
+		// Participation In Events
 		employeePIPCsArgs := sqlc.GetEmployeeParticipationInProfessionalCommunitysByEmployeeIDAndLanguageCodeParams{
 			EmployeeID:   employee.ID,
 			LanguageCode: langCode,
@@ -243,6 +252,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			})
 		}
 
+		// Refresher Course
 		employeeRCArgs := sqlc.GetEmployeeRefresherCoursesByEmployeeIDAndLanguageCodeParams{
 			EmployeeID:   employee.ID,
 			LanguageCode: langCode,
@@ -266,6 +276,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			})
 		}
 
+		// Participation in Events
 		employeePIEArgs := sqlc.GetEmployeeParticipationInEventsByEmployeeIDAndLanguageCodeParams{
 			EmployeeID:   employee.ID,
 			LanguageCode: langCode,
@@ -288,6 +299,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			})
 		}
 
+		// Research Activity
 		employeeRAsArgs := sqlc.GetEmployeeResearchActivitiesByEmployeeIDAndLanguageCodeParams{
 			EmployeeID:   employee.ID,
 			LanguageCode: langCode,
@@ -310,6 +322,7 @@ func (s *Service) GetEmployeeByUniqueID(ctx context.Context, uniqueID string, la
 			})
 		}
 
+		// Socials
 		employeeSocials, err := q.GetEmployeeSocialsByEmployeeID(ctx, employee.ID)
 		if err != nil {
 			if pgErr := s.asPgError(err); pgErr != nil {

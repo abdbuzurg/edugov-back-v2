@@ -81,14 +81,14 @@ func (s *Service) Login(ctx context.Context, req *dto.AuthRequest) (*dto.AuthRes
 
 	user, err := s.store.Queries.GetUserByEmail(ctx, req.Email)
 	if err != nil {
-		pgErr := s.asPgError(err)
-		if pgErr != nil && !errors.Is(pgErr, pgx.ErrNoRows) {
-			return nil, s.pgErrToAppErr(pgErr)
-		}
-		if errors.Is(pgErr, pgx.ErrNoRows) {
+		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, apperr.Validation("invalid credentials", map[string]string{
 				"email": "no user with this email",
 			})
+		}
+
+		if pgErr := s.asPgError(err); pgErr != nil {
+			return nil, s.pgErrToAppErr(pgErr)
 		}
 
 		return nil, apperr.Internal("internal error", fmt.Errorf("Login(service) -> GetUserByEmail(repo) params %v: %w", req.Email, err))
@@ -167,7 +167,7 @@ func (s *Service) Login(ctx context.Context, req *dto.AuthRequest) (*dto.AuthRes
 	return &dto.AuthResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
-		UserID:       employee.UniqueID,
+		UniqueID:     employee.UniqueID,
 	}, nil
 }
 
@@ -276,7 +276,7 @@ func (s *Service) RefreshToken(ctx context.Context, refreshToken string) (*dto.A
 	return &dto.AuthResponse{
 		AccessToken:  accessToken,
 		RefreshToken: newRefreshToken,
-		UserID:       employee.UniqueID,
+		UniqueID:     employee.UniqueID,
 	}, nil
 }
 

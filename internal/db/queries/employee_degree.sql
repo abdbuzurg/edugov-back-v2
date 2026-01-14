@@ -2,22 +2,24 @@
 INSERT INTO employee_degrees(
   employee_id,
   language_code,
+  rf_institution_id,
   degree_level,
-  university_name,
+  institution_name,
   speciality,
   date_start,
   date_end,
   given_by,
   date_degree_recieved
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8, $9
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 ) RETURNING *;
 
 -- name: UpdateEmployeeDegree :one
 UPDATE employee_degrees
 SET
+  rf_institution_id    = COALESCE(sqlc.narg('rf_institution_id'), rf_institution_id),
   degree_level          = COALESCE(sqlc.narg('degree_level'), degree_level),
-  university_name       = COALESCE(sqlc.narg('university_name'), university_name),
+  institution_name      = COALESCE(sqlc.narg('institution_name'), institution_name),
   speciality            = COALESCE(sqlc.narg('speciality'), speciality),
   date_start            = COALESCE(sqlc.narg('date_start'), date_start),
   date_end              = COALESCE(sqlc.narg('date_end'), date_end),

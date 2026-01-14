@@ -13,8 +13,9 @@ import (
 func (s *Service) mapSQLCEmployeeDegreeModelToDTOEmployeeDegreeResponse(dbResult sqlc.EmployeeDegree) dto.EmployeeDegreeResponse {
 	result := dto.EmployeeDegreeResponse{
 		ID:                 dbResult.ID,
+		RfInstitutionID:    dbResult.RfInstitutionID,
 		DegreeLevel:        dbResult.DegreeLevel,
-		UniversityName:     dbResult.UniversityName,
+		InstitutionName:    dbResult.InstitutionName,
 		Speciality:         dbResult.Speciality,
 		DateStart:          dbResult.DateStart.Time,
 		DateEnd:            dbResult.DateEnd.Time,
@@ -37,11 +38,12 @@ func (s *Service) CreateEmployeeDegree(ctx context.Context, req *dto.CreateEmplo
 	}
 
 	createdEmployeeDegreeArgs := sqlc.CreateEmployeeDegreeParams{
-		EmployeeID:     req.EmployeeID,
-		LanguageCode:   req.LanguageCode,
-		DegreeLevel:    req.DegreeLevel,
-		UniversityName: req.UniversityName,
-		Speciality:     req.Speciality,
+		EmployeeID:         req.EmployeeID,
+		LanguageCode:       req.LanguageCode,
+		RfInstitutionID:    req.RfInstitutionID,
+		DegreeLevel:        req.DegreeLevel,
+		InstitutionName:    req.InstitutionName,
+		Speciality:         req.Speciality,
 		DateStart: pgtype.Date{
 			Time:  req.DateStart,
 			Valid: !req.DateStart.IsZero(),
@@ -99,8 +101,9 @@ func (s *Service) UpdateEmployeeDegree(ctx context.Context, req *dto.UpdateEmplo
 
 	updateEmployeeDegreeArgs := sqlc.UpdateEmployeeDegreeParams{
 		ID:                 req.ID,
+		RfInstitutionID:    req.RfInstitutionID,
 		DegreeLevel:        req.DegreeLevel,
-		UniversityName:     req.UniversityName,
+		InstitutionName:    req.InstitutionName,
 		Speciality:         req.Speciality,
 		DateStart:          dateStart,
 		DateEnd:            dateEnd,

@@ -52,22 +52,8 @@ BEGIN
 END $$;
 
 -- 4) Rename university_name -> institution_name
-DO $$
-BEGIN
-  IF EXISTS (
-    SELECT 1
-    FROM information_schema.columns
-    WHERE table_name='employee_degrees'
-      AND column_name='university_name'
-  ) AND NOT EXISTS (
-    SELECT 1
-    FROM information_schema.columns
-    WHERE table_name='employee_degrees'
-      AND column_name='institution_name'
-  ) THEN
-    ALTER TABLE employee_degrees RENAME COLUMN university_name TO institution_name;
-  END IF;
-END $$;
+ALTER TABLE employee_degrees
+  RENAME COLUMN university_name TO institution_name;
 
 -- 5) Fill rf tables
 DO $$

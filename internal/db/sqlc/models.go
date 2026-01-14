@@ -25,7 +25,7 @@ type EmployeeDegree struct {
 	ID                 int64              `json:"id"`
 	EmployeeID         int64              `json:"employee_id"`
 	LanguageCode       string             `json:"language_code"`
-	UniversityName     string             `json:"university_name"`
+	InstitutionName    string             `json:"institution_name"`
 	DegreeLevel        string             `json:"degree_level"`
 	Speciality         string             `json:"speciality"`
 	DateStart          pgtype.Date        `json:"date_start"`
@@ -98,13 +98,21 @@ type EmployeePatent struct {
 }
 
 type EmployeePublication struct {
-	ID                int64              `json:"id"`
-	EmployeeID        int64              `json:"employee_id"`
-	LanguageCode      string             `json:"language_code"`
-	PublicationTitle  string             `json:"publication_title"`
-	LinkToPublication string             `json:"link_to_publication"`
-	CreatedAt         pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
+	ID                  int64              `json:"id"`
+	EmployeeID          int64              `json:"employee_id"`
+	LanguageCode        string             `json:"language_code"`
+	RfPublicationTypeID int64              `json:"rf_publication_type_id"`
+	Name                string             `json:"name"`
+	Type                string             `json:"type"`
+	Authors             *string            `json:"authors"`
+	JournalName         *string            `json:"journal_name"`
+	Volume              *string            `json:"volume"`
+	Number              *string            `json:"number"`
+	Pages               *string            `json:"pages"`
+	Year                *int32             `json:"year"`
+	Link                string             `json:"link"`
+	CreatedAt           pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt           pgtype.Timestamptz `json:"updated_at"`
 }
 
 type EmployeeRefresherCourse struct {
@@ -367,6 +375,14 @@ type RfInstitutionName struct {
 	NameNorm        string             `json:"name_norm"`
 	CreatedAt       pgtype.Timestamptz `json:"created_at"`
 	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
+}
+
+type RfPublicationType struct {
+	ID           int64              `json:"id"`
+	LanguageCode string             `json:"language_code"`
+	Name         string             `json:"name"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
 }
 
 type User struct {

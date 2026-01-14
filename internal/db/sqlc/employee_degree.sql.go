@@ -15,23 +15,25 @@ const createEmployeeDegree = `-- name: CreateEmployeeDegree :one
 INSERT INTO employee_degrees(
   employee_id,
   language_code,
+  rf_institution_id,
   degree_level,
-  university_name,
+  institution_name,
   speciality,
   date_start,
   date_end,
   given_by,
   date_degree_recieved
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7, $8, $9
-) RETURNING id, employee_id, language_code, university_name, degree_level, speciality, date_start, date_end, given_by, date_degree_recieved, created_at, updated_at, rf_institution_id
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+) RETURNING id, employee_id, language_code, institution_name, degree_level, speciality, date_start, date_end, given_by, date_degree_recieved, created_at, updated_at, rf_institution_id
 `
 
 type CreateEmployeeDegreeParams struct {
 	EmployeeID         int64       `json:"employee_id"`
 	LanguageCode       string      `json:"language_code"`
+	RfInstitutionID    int64       `json:"rf_institution_id"`
 	DegreeLevel        string      `json:"degree_level"`
-	UniversityName     string      `json:"university_name"`
+	InstitutionName    string      `json:"institution_name"`
 	Speciality         string      `json:"speciality"`
 	DateStart          pgtype.Date `json:"date_start"`
 	DateEnd            pgtype.Date `json:"date_end"`
@@ -43,8 +45,9 @@ func (q *Queries) CreateEmployeeDegree(ctx context.Context, arg CreateEmployeeDe
 	row := q.db.QueryRow(ctx, createEmployeeDegree,
 		arg.EmployeeID,
 		arg.LanguageCode,
+		arg.RfInstitutionID,
 		arg.DegreeLevel,
-		arg.UniversityName,
+		arg.InstitutionName,
 		arg.Speciality,
 		arg.DateStart,
 		arg.DateEnd,
@@ -56,7 +59,7 @@ func (q *Queries) CreateEmployeeDegree(ctx context.Context, arg CreateEmployeeDe
 		&i.ID,
 		&i.EmployeeID,
 		&i.LanguageCode,
-		&i.UniversityName,
+		&i.InstitutionName,
 		&i.DegreeLevel,
 		&i.Speciality,
 		&i.DateStart,
@@ -81,7 +84,7 @@ func (q *Queries) DeleteEmployeeDegree(ctx context.Context, id int64) error {
 }
 
 const getEmployeeDegreeByID = `-- name: GetEmployeeDegreeByID :one
-SELECT id, employee_id, language_code, university_name, degree_level, speciality, date_start, date_end, given_by, date_degree_recieved, created_at, updated_at, rf_institution_id
+SELECT id, employee_id, language_code, institution_name, degree_level, speciality, date_start, date_end, given_by, date_degree_recieved, created_at, updated_at, rf_institution_id
 FROM employee_degrees
 WHERE id = $1
 `
@@ -93,7 +96,7 @@ func (q *Queries) GetEmployeeDegreeByID(ctx context.Context, id int64) (Employee
 		&i.ID,
 		&i.EmployeeID,
 		&i.LanguageCode,
-		&i.UniversityName,
+		&i.InstitutionName,
 		&i.DegreeLevel,
 		&i.Speciality,
 		&i.DateStart,
@@ -108,7 +111,7 @@ func (q *Queries) GetEmployeeDegreeByID(ctx context.Context, id int64) (Employee
 }
 
 const getEmployeeDegreesByEmployeeIDAndLanguageCode = `-- name: GetEmployeeDegreesByEmployeeIDAndLanguageCode :many
-SELECT id, employee_id, language_code, university_name, degree_level, speciality, date_start, date_end, given_by, date_degree_recieved, created_at, updated_at, rf_institution_id
+SELECT id, employee_id, language_code, institution_name, degree_level, speciality, date_start, date_end, given_by, date_degree_recieved, created_at, updated_at, rf_institution_id
 FROM employee_degrees
 WHERE employee_id = $1 AND language_code = $2
 ORDER BY employee_degrees.date_degree_recieved DESC
@@ -132,7 +135,7 @@ func (q *Queries) GetEmployeeDegreesByEmployeeIDAndLanguageCode(ctx context.Cont
 			&i.ID,
 			&i.EmployeeID,
 			&i.LanguageCode,
-			&i.UniversityName,
+			&i.InstitutionName,
 			&i.DegreeLevel,
 			&i.Speciality,
 			&i.DateStart,
@@ -156,21 +159,23 @@ func (q *Queries) GetEmployeeDegreesByEmployeeIDAndLanguageCode(ctx context.Cont
 const updateEmployeeDegree = `-- name: UpdateEmployeeDegree :one
 UPDATE employee_degrees
 SET
-  degree_level          = COALESCE($1, degree_level),
-  university_name       = COALESCE($2, university_name),
-  speciality            = COALESCE($3, speciality),
-  date_start            = COALESCE($4, date_start),
-  date_end              = COALESCE($5, date_end),
-  given_by              = COALESCE($6, given_by),
-  date_degree_recieved  = COALESCE($7, date_degree_recieved),
+  rf_institution_id    = COALESCE($1, rf_institution_id),
+  degree_level          = COALESCE($2, degree_level),
+  institution_name      = COALESCE($3, institution_name),
+  speciality            = COALESCE($4, speciality),
+  date_start            = COALESCE($5, date_start),
+  date_end              = COALESCE($6, date_end),
+  given_by              = COALESCE($7, given_by),
+  date_degree_recieved  = COALESCE($8, date_degree_recieved),
   updated_at = now()
-WHERE id = $8
-RETURNING id, employee_id, language_code, university_name, degree_level, speciality, date_start, date_end, given_by, date_degree_recieved, created_at, updated_at, rf_institution_id
+WHERE id = $9
+RETURNING id, employee_id, language_code, institution_name, degree_level, speciality, date_start, date_end, given_by, date_degree_recieved, created_at, updated_at, rf_institution_id
 `
 
 type UpdateEmployeeDegreeParams struct {
+	RfInstitutionID    *int64      `json:"rf_institution_id"`
 	DegreeLevel        *string     `json:"degree_level"`
-	UniversityName     *string     `json:"university_name"`
+	InstitutionName    *string     `json:"institution_name"`
 	Speciality         *string     `json:"speciality"`
 	DateStart          pgtype.Date `json:"date_start"`
 	DateEnd            pgtype.Date `json:"date_end"`
@@ -181,8 +186,9 @@ type UpdateEmployeeDegreeParams struct {
 
 func (q *Queries) UpdateEmployeeDegree(ctx context.Context, arg UpdateEmployeeDegreeParams) (EmployeeDegree, error) {
 	row := q.db.QueryRow(ctx, updateEmployeeDegree,
+		arg.RfInstitutionID,
 		arg.DegreeLevel,
-		arg.UniversityName,
+		arg.InstitutionName,
 		arg.Speciality,
 		arg.DateStart,
 		arg.DateEnd,
@@ -195,7 +201,7 @@ func (q *Queries) UpdateEmployeeDegree(ctx context.Context, arg UpdateEmployeeDe
 		&i.ID,
 		&i.EmployeeID,
 		&i.LanguageCode,
-		&i.UniversityName,
+		&i.InstitutionName,
 		&i.DegreeLevel,
 		&i.Speciality,
 		&i.DateStart,

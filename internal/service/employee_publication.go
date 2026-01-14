@@ -8,6 +8,24 @@ import (
 	"fmt"
 )
 
+func (s *Service) mapEmployeePublicationToResponse(publication sqlc.EmployeePublication) *dto.EmployeePublicationResponse {
+	return &dto.EmployeePublicationResponse{
+		ID:                  publication.ID,
+		RfPublicationTypeID: publication.RfPublicationTypeID,
+		Name:                publication.Name,
+		Type:                publication.Type,
+		Authors:             publication.Authors,
+		JournalName:         publication.JournalName,
+		Volume:              publication.Volume,
+		Number:              publication.Number,
+		Pages:               publication.Pages,
+		Year:                publication.Year,
+		Link:                publication.Link,
+		CreatedAt:           publication.CreatedAt.Time,
+		UpdatedAt:           publication.UpdatedAt.Time,
+	}
+}
+
 // CreateEmployeePublication creates a publication entry.
 func (s *Service) CreateEmployeePublication(ctx context.Context, req *dto.CreateEmployeePublicationRequest) (*dto.EmployeePublicationResponse, error) {
 	if err := s.validator.Struct(req); err != nil {
@@ -15,10 +33,18 @@ func (s *Service) CreateEmployeePublication(ctx context.Context, req *dto.Create
 	}
 
 	createdEmployeePublicationArgs := sqlc.CreateEmployeePublicationParams{
-		EmployeeID:        req.EmployeeID,
-		LanguageCode:      req.LanguageCode,
-		PublicationTitle:  req.PublicationTitle,
-		LinkToPublication: req.LinkToPublication,
+		EmployeeID:          req.EmployeeID,
+		LanguageCode:        req.LanguageCode,
+		RfPublicationTypeID: req.RfPublicationTypeID,
+		Name:                req.Name,
+		Type:                req.Type,
+		Authors:             req.Authors,
+		JournalName:         req.JournalName,
+		Volume:              req.Volume,
+		Number:              req.Number,
+		Pages:               req.Pages,
+		Year:                req.Year,
+		Link:                req.Link,
 	}
 	createdEmployeePublication, err := s.store.Queries.CreateEmployeePublication(ctx, createdEmployeePublicationArgs)
 	if err != nil {
@@ -29,13 +55,7 @@ func (s *Service) CreateEmployeePublication(ctx context.Context, req *dto.Create
 		return nil, apperr.Internal("internal error", fmt.Errorf("CreateEmployeePublication(service) -> CreateEmployeePublication(repo) params %v: %w", createdEmployeePublicationArgs, err))
 	}
 
-	return &dto.EmployeePublicationResponse{
-		ID:                createdEmployeePublication.ID,
-		PublicationTitle:  createdEmployeePublication.PublicationTitle,
-		LinkToPublication: createdEmployeePublication.LinkToPublication,
-		CreatedAt:         createdEmployeePublication.CreatedAt.Time,
-		UpdatedAt:         createdEmployeePublication.UpdatedAt.Time,
-	}, nil
+	return s.mapEmployeePublicationToResponse(createdEmployeePublication), nil
 }
 
 // UpdateEmployeePublication updates an existing publication.
@@ -45,9 +65,17 @@ func (s *Service) UpdateEmployeePublication(ctx context.Context, req *dto.Update
 	}
 
 	updatedEmployeePublicationArgs := sqlc.UpdateEmployeePublicationParams{
-		ID:                req.ID,
-		PublicationTitle:  req.PublicationTitle,
-		LinkToPublication: req.LinkToPublication,
+		ID:                  req.ID,
+		RfPublicationTypeID: req.RfPublicationTypeID,
+		Name:                req.Name,
+		Type:                req.Type,
+		Authors:             req.Authors,
+		JournalName:         req.JournalName,
+		Volume:              req.Volume,
+		Number:              req.Number,
+		Pages:               req.Pages,
+		Year:                req.Year,
+		Link:                req.Link,
 	}
 	updatedEmployeePublicationResult, err := s.store.Queries.UpdateEmployeePublication(ctx, updatedEmployeePublicationArgs)
 	if err != nil {
@@ -58,13 +86,7 @@ func (s *Service) UpdateEmployeePublication(ctx context.Context, req *dto.Update
 		return nil, apperr.Internal("internal error", fmt.Errorf("UpdateEmployeePublication(service) -> UpdateEmployeePublication(repo) params %v: %w", updatedEmployeePublicationArgs, err))
 	}
 
-	return &dto.EmployeePublicationResponse{
-		ID:                updatedEmployeePublicationResult.ID,
-		PublicationTitle:  updatedEmployeePublicationResult.PublicationTitle,
-		LinkToPublication: updatedEmployeePublicationResult.LinkToPublication,
-		CreatedAt:         updatedEmployeePublicationResult.CreatedAt.Time,
-		UpdatedAt:         updatedEmployeePublicationResult.UpdatedAt.Time,
-	}, nil
+	return s.mapEmployeePublicationToResponse(updatedEmployeePublicationResult), nil
 }
 
 // DeleteEmployeePublication removes a publication entry.
@@ -110,13 +132,7 @@ func (s *Service) GetEmployeePublicationByEmployeeIDAndLanguageCode(ctx context.
 
 	result := make([]*dto.EmployeePublicationResponse, len(employeePublications))
 	for index, publication := range employeePublications {
-		result[index] = &dto.EmployeePublicationResponse{
-			ID:                publication.ID,
-			PublicationTitle:  publication.PublicationTitle,
-			LinkToPublication: publication.LinkToPublication,
-			CreatedAt:         publication.CreatedAt.Time,
-			UpdatedAt:         publication.UpdatedAt.Time,
-		}
+		result[index] = s.mapEmployeePublicationToResponse(publication)
 	}
 
 	return result, nil

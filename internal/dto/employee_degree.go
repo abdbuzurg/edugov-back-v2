@@ -6,8 +6,9 @@ import "time"
 type CreateEmployeeDegreeRequest struct {
 	EmployeeID         int64     `json:"employeeID" validate:"required,min=1"`
 	LanguageCode       string    `json:"-" validate:"required,len=2"`
+	RfInstitutionID    int64     `json:"rfInstitutionID" validate:"required,min=1"`
 	DegreeLevel        string    `json:"degreeLevel" validate:"required"`
-	UniversityName     string    `json:"universityName" validate:"required"`
+	InstitutionName    string    `json:"institutionName" validate:"required"`
 	Speciality         string    `json:"speciality" validate:"required"`
 	DateStart          time.Time `json:"dateStart" validate:"required"`
 	DateEnd            time.Time `json:"dateEnd" validate:"required"`
@@ -18,8 +19,9 @@ type CreateEmployeeDegreeRequest struct {
 // UpdateEmployeeDegreeRequest represents input for updating a degree.
 type UpdateEmployeeDegreeRequest struct {
 	ID                 int64      `json:"id" validate:"required,min=1"`
+	RfInstitutionID    *int64     `json:"rfInstitutionID" validate:"omitempty,min=1"`
 	DegreeLevel        *string    `json:"degreeLevel" validate:"omitempty"`
-	UniversityName     *string    `json:"universityName" validate:"omitempty"`
+	InstitutionName    *string    `json:"institutionName" validate:"omitempty"`
 	Speciality         *string    `json:"speciality" validate:"omitempty"`
 	DateStart          *time.Time `json:"dateStart" validate:"omitempty"`
 	DateEnd            *time.Time `json:"dateEnd" validate:"omitempty"`
@@ -30,8 +32,9 @@ type UpdateEmployeeDegreeRequest struct {
 // EmployeeDegreeResponse represents a degree record in responses.
 type EmployeeDegreeResponse struct {
 	ID                 int64     `json:"id"`
+	RfInstitutionID    int64     `json:"rfInstitutionID"`
 	DegreeLevel        string    `json:"degreeLevel"`
-	UniversityName     string    `json:"universityName"`
+	InstitutionName    string    `json:"institutionName"`
 	Speciality         string    `json:"speciality"`
 	DateStart          time.Time `json:"dateStart"`
 	DateEnd            time.Time `json:"dateEnd"`

@@ -31,7 +31,7 @@ type RefreshTokenRequest struct {
 type AuthResponse struct {
 	AccessToken  string `json:"accessToken"`
 	RefreshToken string `json:"refreshToken"`
-	UserID       string `json:"userID"`
+	UniqueID     string `json:"uniqueID"`
 }
 
 // MeResponse exposes basic identity info.

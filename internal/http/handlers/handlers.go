@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 // Handlers wires HTTP handlers to the service layer.
@@ -74,7 +75,7 @@ func WriteError(w http.ResponseWriter, r *http.Request, err error) {
 	status := statusFromCode(code)
 
 	// Request ID (chi middleware.RequestID sets X-Request-ID)
-	reqID := r.Header.Get("X-Request-ID")
+	reqID := middleware.GetReqID(r.Context())
 
 	// One log per failed request (centralized)
 	slog.Error("request failed",
